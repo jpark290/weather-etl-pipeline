@@ -6,19 +6,27 @@ from ingestion import ingest_eccc, ingest_openmeteo
 from transformation import merge_flat 
 from loading import to_csv, export
 import pandas as pd
+pd.set_option('display.width', 1000)
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+
 
 # --- Configuration ---
 # NOTE: Use actual path and coordinates for assignment execution
-DEFAULT_LAT = 43.79  
+DEFAULT_LAT = 43.79
 DEFAULT_LON = -79.35
 PREDICTION_API = 'http://prediction_system/api/v1/data' # Mock external API URL
 
 def main():
     parser = argparse.ArgumentParser(description="Joe ETL: ECCC + Open-Meteo → flat 10-field CSV")
-    parser.add_argument("--eccc_csv", required=True, help="Path to ECCC daily CSV file")
+    parser.add_argument("--eccc_csv", default="data/eccc_station.csv",
+                    help="Path to ECCC daily CSV file (default: data/eccc_station.csv)")
     parser.add_argument("--lat", type=float, default=DEFAULT_LAT, help="Station latitude")
     parser.add_argument("--lon", type=float, default=DEFAULT_LON, help="Station longitude")
     parser.add_argument("--days", type=int, default=16, help="Forecast horizon in days (default: 16)")
+    parser.add_argument("--past_days", type=int, default=5, 
+                        help="Historical days included in the Open-Meteo API call (default: 5)")
+    
     parser.add_argument("--out", default="data/flat_weather.csv", help="Output CSV path")
     args = parser.parse_args()
 
@@ -26,7 +34,8 @@ def main():
     print("--- 1. Ingestion Phase (E) ---")
     try:
         eccc_df = ingest_eccc(args.eccc_csv)
-        fc_df = ingest_openmeteo(args.lat, args.lon, days=args.days)
+        # ingest_openmeteo 함수 호출 시 args.past_days를 전달합니다.
+        fc_df = ingest_openmeteo(args.lat, args.lon, days=args.days, past_days=args.past_days)
         # IRawDatasets is implicitly passed here as the tuple (eccc_df, fc_df)
         print("Ingestion complete: Raw historical and forecast data acquired.")
     except Exception as e:

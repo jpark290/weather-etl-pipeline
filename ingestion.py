@@ -36,7 +36,7 @@ def _to_series_date(values) -> pd.Series:
         ts = pd.Series(ts)
     return ts.dt.date
 
-# --- ingestion: ECCC (historical) -----------------------------------------
+# --- ingestion: ECCC (historical) -------------------------------------
 
 def ingest_eccc(csv_path: str) -> pd.DataFrame:
     """Read ECCC daily CSV and return a raw historical DataFrame."""
@@ -82,8 +82,8 @@ def ingest_eccc(csv_path: str) -> pd.DataFrame:
 def ingest_openmeteo(
     lat: float,
     lon: float,
-    days: int = 16,
-    past_days: int = 5,
+    past_days: int,
+    days: int,
     daily_params=("temperature_2m_max", "temperature_2m_min", "precipitation_sum"),
 ) -> pd.DataFrame:
     """Call Open-Meteo daily API and return a raw forecast DataFrame."""
