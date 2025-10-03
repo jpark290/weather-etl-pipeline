@@ -146,14 +146,6 @@ This demonstrates the **merge** working as intended.
 
 ---
 
-## 9) Future Work (nice-to-have)
-
-* Add unit tests for column mapping and merge rules
-* Add `to_parquet()` and S3/DB loaders
-* Wire the `export()` to a real prediction service (currently simulated)
-* Add a small chart to visualize obs vs. fc trends around the overlap
-
----
-
 **Author:** Haley
-**Project Type:** ETL / Data Engineering Prototype (portfolio-ready)
+**Project Type:** ETL / Data Engineering Prototype
+
