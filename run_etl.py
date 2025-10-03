@@ -34,7 +34,6 @@ def main():
     print("--- 1. Ingestion Phase (E) ---")
     try:
         eccc_df = ingest_eccc(args.eccc_csv)
-        # ingest_openmeteo 함수 호출 시 args.past_days를 전달합니다.
         fc_df = ingest_openmeteo(args.lat, args.lon, days=args.days, past_days=args.past_days)
         # IRawDatasets is implicitly passed here as the tuple (eccc_df, fc_df)
         print("Ingestion complete: Raw historical and forecast data acquired.")
